@@ -96,29 +96,6 @@ CHECK_INTERVAL=5
 PYTHONUNBUFFERED=1
 ```
 
-### База данных:
-- **Host**: localhost:5433 (внешний порт)
-- **Database**: steam_db
-- **User**: test_user
-- **Password**: 13579
-
-## 📁 Структура проекта
-
-```
-steam/
-├── SMPC/                   # Основной код приложения
-│   ├── api/               # FastAPI веб-сервер
-│   ├── bot/               # Telegram бот
-│   ├── database/          # Работа с базой данных
-│   └── price_parser/      # Парсинг цен Steam Market
-├── logs/                  # Логи приложения
-├── docker-compose.yml     # Конфигурация Docker
-├── docker.env            # Переменные окружения
-├── Dockerfile            # Образ приложения
-├── requirements.txt      # Python зависимости
-├── run_bot.py           # Запуск бота
-└── start_server.py      # Запуск API сервера
-```
 
 ## 🔧 Разработка
 
