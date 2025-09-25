@@ -1,0 +1,66 @@
+version: '3.3'
+
+services:
+  # PostgreSQL база данных
+  postgres:
+    image: postgres:15-alpine
+    container_name: steam_postgres
+    environment:
+      POSTGRES_DB: steam_db
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: 13579
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./SMPC/database/01_create_tables.sql:/docker-entrypoint-initdb.d/01_create_tables.sql
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test_user -d steam_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - steam_network
+
+  # Основное приложение (API + Bot)
+  steam_app:
+    build: .
+    container_name: steam_app
+    environment:
+      # Настройки базы данных
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: test_user
+      DB_PASSWORD: 13579
+      DB_NAME: steam_db
+      
+      # Telegram Bot Token (ОБЯЗАТЕЛЬНО УСТАНОВИТЕ!)
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      
+      # Дополнительные настройки
+      CHECK_INTERVAL: ${CHECK_INTERVAL:-5}
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./logs:/app/logs
+      - ./SMPC/database/database/backups:/app/SMPC/database/database/backups
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - steam_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  steam_network:
+    driver: bridge
