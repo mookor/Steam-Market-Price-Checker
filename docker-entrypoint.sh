@@ -38,8 +38,7 @@ echo "🗄️ Setting up database..."
 cd /app/SMPC/database
 python setup_database.py
 
-# Возвращаемся в корневую директорию
-cd /app
+cd /app/SMPC/api
 
 # Шаг 2: Запуск API сервера в фоне
 echo "🌐 Starting API server..."
@@ -49,6 +48,8 @@ API_PID=$!
 # Ждем готовности API
 wait_for_api
 
+
+cd /app/SMPC/bot
 
 # Шаг 3: Запуск бота
 echo "🤖 Starting Telegram bot..."
