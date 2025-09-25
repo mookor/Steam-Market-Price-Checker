@@ -49,19 +49,6 @@ Telegram-бот для мониторинга цен на предметы в St
    TELEGRAM_BOT_TOKEN=ваш_токен_от_BotFather
    ```
 
-3. **Запустите бота:**
-   
-   **Linux/macOS:**
-   ```bash
-   chmod +x quick_start.sh
-   ./quick_start.sh
-   ```
-   
-   **Windows:**
-   ```cmd
-   quick_start.bat
-   ```
-
 ### Ручной запуск через Docker Compose
 
 1. **Соберите и запустите контейнеры:**
